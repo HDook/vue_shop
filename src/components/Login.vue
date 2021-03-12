@@ -30,8 +30,8 @@ export default {
   data () {
     return {
       loginForm: {
-        username: 'zs',
-        password: '123'
+        username: 'admin',
+        password: '123456'
       },
       loginFormRules: {
         username: [
@@ -54,9 +54,9 @@ export default {
             trigger: 'blur'
           },
           {
-            min: 6,
+            min: 5,
             max: 15,
-            message: '长度在 6 到 15 个字符',
+            message: '长度在 5 到 15 个字符',
             trigger: 'blur'
           }
 
@@ -69,12 +69,25 @@ export default {
       this.$refs.loginFormRef.resetFields()
     },
     login () {
-      /*await只能放在async修饰的函数中，表示异步执行该函数*/
+      /* await只能放在async修饰的函数中，表示异步执行该函数 */
       this.$refs.loginFormRef.validate(async valid => {
         if (!valid) return
         const { data: result } = await this.$http.post('login', this.loginForm)
-        if (result.meta.status !== 200) return this.login('登陆失败')
-        console.log('登陆成功')
+        if (result.meta.status !== 200) return this.$message.error('登陆失败！')
+        window.sessionStorage.setItem('token', result.data.token)
+        await this.$router.push('/home')
+        this.$message.success('登陆成功！')
+        /*
+         if (this.loginForm.username === 'admin' && this.loginForm.password === 'admin') {
+           window.sessionStorage.setItem('token', this.$token)
+           this.$router.push('/home')
+           return this.$message.success('登陆成功！')
+         }
+         return this.$message.error('用户名或密码错误，登陆失败！') */
+        //  1.将登陆成功之后的token保存到客户端的sessionStorage中
+        //    1.1 项目中除了登陆之外的其他API接口，必须在登陆之后才能访问
+        //    1.2 token只应在当前网址打开期间生效，所以将token保存在sessionStorage中
+        //  2.通过编程式导航跳转到后台主页，路由地址是/home
       })
     }
   }
