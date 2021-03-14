@@ -279,7 +279,6 @@ export default {
         if (res.meta.status !== 200) {
           return this.$message.error('修改用户数据出错！')
         }
-        e
       })
     }
   }
