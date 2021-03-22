@@ -46,7 +46,11 @@
         <el-main>
           <router-view></router-view>
         </el-main>
-        <el-footer>Footer</el-footer>
+        <el-footer>
+          <div>
+            <p class="vcenter" style="text-align: center">杭州橙谷科技有限公司</p>
+          </div>
+        </el-footer>
       </el-container>
     </el-container>
   </el-container>
