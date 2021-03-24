@@ -9,58 +9,80 @@
     <!--        卡片视图区-->
     <el-card>
       <el-alert
-        title="添加商品信息"
-        type="info"
+        title='添加商品信息'
+        type='info'
         center
-        show-icon :closable="false">
+        show-icon :closable='false'>
       </el-alert>
       <!--      步骤条-->
-      <el-steps :space="200" :active="activeIndex-0" finish-status="success" align-center>
-        <el-step title="基本信息"></el-step>
-        <el-step title="商品参数"></el-step>
-        <el-step title="商品属性"></el-step>
-        <el-step title="商品图片"></el-step>
-        <el-step title="完成"></el-step>
+      <el-steps :space='200' :active='activeIndex-0' finish-status='success' align-center>
+        <el-step title='基本信息'></el-step>
+        <el-step title='商品参数'></el-step>
+        <el-step title='商品属性'></el-step>
+        <el-step title='商品图片'></el-step>
+        <el-step title='完成'></el-step>
       </el-steps>
-      <el-form :model="addForm" :rules="addFormRules" ref="addFromRef" label-width="100px" label-position="top">
+      <el-form :model='addForm' :rules='addFormRules' ref='addFromRef' label-width='100px' label-position='top'>
         <!--            tab栏-->
-        <el-tabs v-model="activeIndex" :tab-position="'left'" :before-leave="beforeTabLeave" @tab-click="tabClicked">
-          <el-tab-pane label="基本信息" name="0">
-            <el-form-item label="商品名称" prop="goods_name">
-              <el-input v-model="addForm.goods_name"></el-input>
+        <el-tabs v-model='activeIndex' :tab-position="'left'" :before-leave='beforeTabLeave' @tab-click='tabClicked'>
+          <el-tab-pane label='基本信息' name='0'>
+            <el-form-item label='商品名称' prop='goods_name'>
+              <el-input v-model='addForm.goods_name'></el-input>
             </el-form-item>
-            <el-form-item label="商品价格" prop="goods_price">
-              <el-input v-model="addForm.goods_price" type="number"></el-input>
+            <el-form-item label='商品价格' prop='goods_price'>
+              <el-input v-model='addForm.goods_price' type='number'></el-input>
             </el-form-item>
-            <el-form-item label="商品重量" prop="goods_weight">
-              <el-input v-model="addForm.goods_weight"></el-input>
+            <el-form-item label='商品重量' prop='goods_weight'>
+              <el-input v-model='addForm.goods_weight'></el-input>
             </el-form-item>
-            <el-form-item label="商品数量" prop="goods_number">
-              <el-input v-model="addForm.goods_number" type="number"></el-input>
+            <el-form-item label='商品数量' prop='goods_number'>
+              <el-input v-model='addForm.goods_number' type='number'></el-input>
             </el-form-item>
-            <el-form-item label="商品类型" prop="goods_cat">
+            <el-form-item label='商品类型' prop='goods_cat'>
               <el-cascader
-                :options="cateList"
-                :props="cateProp"
-                v-model="addForm.goods_cat"
-                @change="handleChange"></el-cascader>
+                :options='cateList'
+                :props='cateProp'
+                v-model='addForm.goods_cat'
+                @change='handleChange'></el-cascader>
             </el-form-item>
           </el-tab-pane>
-          <el-tab-pane label="商品参数" name="1">
+          <el-tab-pane label='商品参数' name='1'>
             <!--            渲染表单的Item项-->
-            <el-form-item :label="item.attr_name" v-for="item in manyTableData" :key="item.attr_id">
+            <el-form-item :label='item.attr_name' v-for='item in manyTableData' :key='item.attr_id'>
               <!--              复选框组-->
-              <el-checkbox-group v-model="item.attr_vals">
-                <el-checkbox :label="cb" v-for="(cb,i) in item.attr_vals" :key="i" border></el-checkbox>
+              <el-checkbox-group v-model='item.attr_vals'>
+                <el-checkbox :label='cb' v-for='(cb,i) in item.attr_vals' :key='i' border></el-checkbox>
               </el-checkbox-group>
             </el-form-item>
           </el-tab-pane>
-          <el-tab-pane label="商品属性" name="2">商品属性</el-tab-pane>
-          <el-tab-pane label="商品图片" name="3">商品图片</el-tab-pane>
-          <el-tab-pane label="商品内容" name="4">商品内容</el-tab-pane>
+          <el-tab-pane label='商品属性' name='2'>
+            <el-form-item :label='item.attr_name' v-for='item in onlyTableData' :key='item.attr_id'>
+              <el-input v-model='item.attr_vals'></el-input>
+            </el-form-item>
+          </el-tab-pane>
+          <el-tab-pane label='商品图片' name='3'>
+            <el-upload
+              :action='uploadURL'
+              :on-preview='handlePreview'
+              :on-remove='handleRemove'
+              list-type='picture'
+              :headers='headerObj'
+              :on-success='handleSuccess'>
+              <el-button size='small' type='primary'>点击上传</el-button>
+            </el-upload>
+          </el-tab-pane>
+          <el-tab-pane label='商品内容' name='4'>商品内容</el-tab-pane>
         </el-tabs>
       </el-form>
     </el-card>
+<!--    图片预览-->
+    <el-dialog
+      title="提示"
+      :visible.sync="previewVisible"
+      width="50%"
+      :before-close="handleClose">
+      <img :src='previewPath' alt='' class='previewImg'>
+    </el-dialog>
   </div>
 </template>
 
@@ -76,7 +98,9 @@ export default {
         goods_weight: '',
         goods_number: 0,
         // 商品所属分类列表
-        goods_cat: []
+        goods_cat: [],
+        // 图片的数组
+        pics: []
       },
       addFormRules: {
         goods_name: [
@@ -124,7 +148,14 @@ export default {
         children: 'children'
       },
       manyTableData: [],
-      onlyTableData: []
+      onlyTableData: [],
+      uploadURL: 'https://www.liulongbin.top:8888/api/private/v1/upload',
+      // 图片上传组件的headers请求头对象
+      headerObj: {
+        Authorization: window.sessionStorage.getItem('token')
+      },
+      previewPath: '',
+      previewVisible: false
     }
   },
   created() {
@@ -178,6 +209,24 @@ export default {
         this.onlyTableData = res.data
         console.log(this.onlyTableData)
       }
+    },
+    // 处理图片预览
+    handlePreview(file) {
+      this.previewPath = file.response.data.url
+      this.previewVisible = true
+    },
+    // 处理移除图片的操作
+    handleRemove(file) {
+      console.log(file)
+      const filePath = file.response.data.tmp_path
+      const i = this.addForm.pics.findIndex(x => x.pic === filePath)
+      this.addForm.pics.splice(i, 1)
+    },
+    // 监听上传成功后的函数
+    handleSuccess(response) {
+      const picInfo = { pic: response.data.tmp_path }
+      this.addForm.pics.push(picInfo)
+      console.log(this.addForm.pics)
     }
   },
   computed: {
@@ -191,8 +240,11 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang='less' scoped>
 .el-checkbox {
   margin: 0 10px !important;
+}
+.previewImg{
+  width: 100%;
 }
 </style>
