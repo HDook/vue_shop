@@ -58,7 +58,7 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       // 左侧菜单数据
       menulist: [],
@@ -74,26 +74,26 @@ export default {
       activePath: ''
     }
   },
-  created () {
+  created() {
     this.getMenuList()
     this.activePath = window.sessionStorage.getItem('activePath')
   },
   methods: {
-    logout () {
+    logout() {
       window.sessionStorage.clear()
       this.$router.push('/login')
     },
     // 获取所有的菜单
-    async getMenuList () {
+    async getMenuList() {
       const { data: res } = await this.$http.get('menus')
       if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
       this.menulist = res.data
     },
-    toggleCollapse () {
+    toggleCollapse() {
       this.isCollapse = !this.isCollapse
     },
     // 保存连接的激活的状态
-    saveNavState (activePath) {
+    saveNavState(activePath) {
       window.sessionStorage.setItem('activePath', activePath)
       this.activePath = activePath
     }

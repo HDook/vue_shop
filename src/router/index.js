@@ -8,6 +8,8 @@ import Rights from '@/components/power/Rights'
 import Roles from '@/components/power/Roles'
 import Cate from '@/components/goods/Cate'
 import Params from '@/components/goods/Params'
+import List from '@/components/goods/List'
+import Add from '@/components/goods/Add'
 
 Vue.use(VueRouter)
 // const token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3YW5nIiwiY3JlYXRlZCI6MTQ4OTA3OTk4MTM5MywiZXhwIjoxNDg5Njg0NzgxfQ.RC-BYCe_UZ2URtWddUpWXIp4NMsoeq2O6UF-8tVplqXY1-CI9u1-a-9DAAJGfNWkHE81mpnR3gXzfrBAB3WUAg'
@@ -50,6 +52,14 @@ const router = new VueRouter({
         {
           path: '/params',
           component: Params
+        },
+        {
+          path: '/goods',
+          component: List
+        },
+        {
+          path: '/goods/add',
+          component: Add
         }
       ]
     }
