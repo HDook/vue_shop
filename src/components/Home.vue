@@ -67,7 +67,23 @@ export default {
         103: 'el-icon-s-check',
         101: 'el-icon-s-cooperation',
         102: 'el-icon-s-fold',
-        145: 'el-icon-s-data'
+        145: 'el-icon-s-data',
+        2000: 'el-icon-mobile-phone'
+      },
+      echartsObj: {
+        authName: '图表展示',
+        children: [
+          {
+            authName: '图表列表',
+            children: [],
+            id: 3000,
+            order: null,
+            path: 'echarts'
+          }
+        ],
+        id: 2000,
+        order: 6,
+        path: 'echarts'
       },
       isCollapse: false,
       // 被激活的链接地址
@@ -88,6 +104,7 @@ export default {
       const { data: res } = await this.$http.get('menus')
       if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
       this.menulist = res.data
+      this.menulist.push(this.echartsObj)
     },
     toggleCollapse() {
       this.isCollapse = !this.isCollapse

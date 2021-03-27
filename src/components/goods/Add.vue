@@ -22,7 +22,7 @@
         <el-step title='商品图片'></el-step>
         <el-step title='完成'></el-step>
       </el-steps>
-      <el-form :model='addForm' :rules='addFormRules' ref='addFromRef' label-width='100px' label-position='top'>
+      <el-form :model='addForm' :rules='addFormRules' ref='addFormRef' label-width='100px' label-position='top'>
         <!--            tab栏-->
         <el-tabs v-model='activeIndex' :tab-position="'left'" :before-leave='beforeTabLeave' @tab-click='tabClicked'>
           <el-tab-pane label='基本信息' name='0'>
@@ -71,22 +71,30 @@
               <el-button size='small' type='primary'>点击上传</el-button>
             </el-upload>
           </el-tab-pane>
-          <el-tab-pane label='商品内容' name='4'>商品内容</el-tab-pane>
+          <el-tab-pane label='商品内容' name='4'>
+            <!--            富文本编辑器-->
+            <quill-editor
+              ref="myQuillEditor"
+              v-model="addForm.goods_introduce"
+            />
+            <el-button type="primary" class="btdAdd" b @click="add">添加商品</el-button>
+          </el-tab-pane>
         </el-tabs>
       </el-form>
     </el-card>
-<!--    图片预览-->
+    <!--    图片预览-->
     <el-dialog
       title="提示"
       :visible.sync="previewVisible"
-      width="50%"
-      :before-close="handleClose">
+      width="50%">
       <img :src='previewPath' alt='' class='previewImg'>
     </el-dialog>
   </div>
 </template>
 
 <script>
+import _ from 'lodash'
+
 export default {
   data() {
     return {
@@ -100,7 +108,10 @@ export default {
         // 商品所属分类列表
         goods_cat: [],
         // 图片的数组
-        pics: []
+        pics: [],
+        // 商品详情
+        goods_introduce: '',
+        attrs: []
       },
       addFormRules: {
         goods_name: [
@@ -227,6 +238,41 @@ export default {
       const picInfo = { pic: response.data.tmp_path }
       this.addForm.pics.push(picInfo)
       console.log(this.addForm.pics)
+    },
+    // 添加商品
+    add() {
+      this.$refs.addFormRef.validate(async valid => {
+        if (!valid) {
+          return this.$message.error('添加需要的表单项！')
+        }
+        // 执行添加逻辑
+        // lodash cloneDeep(obj)
+        const form = _.cloneDeep(this.addForm)
+        form.goods_cat = form.goods_cat.join(',')
+        // 处理动态参数
+        this.manyTableData.forEach(item => {
+          const newInfo = {
+            attr_id: item.attr_id,
+            attr_value: item.attr_vals.join(' ')
+          }
+          this.addForm.attrs.push(newInfo)
+        })
+        this.onlyTableData.forEach(item => {
+          const newInfo = {
+            attr_id: item.attr_id,
+            attr_value: item.attr_vals
+          }
+          this.addForm.attrs.push(newInfo)
+        })
+        form.attrs = this.addForm.attrs
+        console.log(form)
+        const { data: res } = await this.$http.post('goods', form)
+        if (res.meta.status !== 201) {
+          this.$message.error('添加商品失败！')
+        }
+        this.$message.success('添加商品成功！')
+        await this.$router.push('/goods')
+      })
     }
   },
   computed: {
@@ -244,7 +290,12 @@ export default {
 .el-checkbox {
   margin: 0 10px !important;
 }
-.previewImg{
+
+.previewImg {
   width: 100%;
+}
+
+.btdAdd {
+  margin-top: 15px;
 }
 </style>
