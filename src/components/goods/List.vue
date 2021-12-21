@@ -24,12 +24,12 @@
         <el-table-column label="商品名称" prop="goods_name"></el-table-column>
         <el-table-column label="商品价格(元)" prop="goods_price" width="90ox"></el-table-column>
         <el-table-column label="商品重量" prop="goods_weight" width="70px"></el-table-column>
-        <el-table-column label="创建时间" prop="goods_time" width="130px">
+        <el-table-column label="创建时间" prop="goods_time" width="150">
           <template slot-scope="scope">
-            {{ scope.row.goods_time | dataFormat }}
+            {{ scope.row.add_time | dataFormat }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="80px">
+        <el-table-column label="操作" width="130px">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" icon="el-icon-edit"></el-button>
             <el-button type="danger" size="mini" icon="el-icon-delete"

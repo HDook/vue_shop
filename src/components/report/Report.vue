@@ -7,17 +7,19 @@
       <el-breadcrumb-item>数据报表</el-breadcrumb-item>
     </el-breadcrumb>
     <!--    卡片视图区-->
-    <el-card>
       <!--      为Echarts准备一个具备大小（宽度）的Dom-->
-      <el-row>
-        <el-col :span="12">
+      <el-row >
+        <el-col :span="11">
+          <el-card>
           <div id="main" style="width: 550px;height: 400px"></div>
+          </el-card>
         </el-col>
         <el-col :span="12">
-          <div id="main2" style="width: 550px;height: 400px"></div>
+          <el-card >
+            <div id="main2" style="width: 550px;height: 400px"></div>
+          </el-card>
         </el-col>
       </el-row>
-    </el-card>
   </div>
 </template>
 
@@ -141,4 +143,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.el-col{
+  margin-right: 20px;
+}
 </style>

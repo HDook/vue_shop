@@ -7,14 +7,16 @@
       <el-breadcrumb-item>图表列表</el-breadcrumb-item>
     </el-breadcrumb>
     <!--    卡片视图区-->
-    <el-card>
         <el-row type="flex" justify="center">
-          <div id="main" style="height: 500px;width: 1000px;border: #2b4b6b solid 1px"></div>
+          <el-card>
+            <div id="main" style="height: 500px;width: 1000px"></div>
+          </el-card>
         </el-row>
         <el-row type="flex" justify="center">
-          <div id="main2" style="height: 500px;width: 1000px;border: #2b4b6b solid 1px"></div>
+          <el-card>
+            <div id="main2" style="height: 500px;width: 1000px"></div>
+          </el-card>
         </el-row>
-    </el-card>
   </div>
 </template>
 
