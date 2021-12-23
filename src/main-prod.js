@@ -18,7 +18,7 @@ import NProgree from 'nprogress'
 // import 'nprogress/nprogress.css'
 
 /* 配置请求的根路径 */
-axios.defaults.baseURL = 'https://rambuild.cn/api/private/v1/'
+axios.defaults.baseURL = 'https://www.liulongbin.top:8888/api/private/v1/'
 // 在request拦截器中展示进度条
 axios.interceptors.request.use(config => {
   NProgree.start()

@@ -14,20 +14,20 @@ import 'quill/dist/quill.snow.css' // for snow theme
 import 'quill/dist/quill.bubble.css' // for bubble theme
 
 // 导入Nprogress包对应的js和css
-import NProgree from 'nprogress'
+import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
 /* 配置请求的根路径 */
-axios.defaults.baseURL = 'https://rambuild.cn/api/private/v1/'
+axios.defaults.baseURL = 'https://www.liulongbin.top:8888/api/private/v1/'
 // 在request拦截器中展示进度条
 axios.interceptors.request.use(config => {
-  NProgree.start()
+  NProgress.start()
   config.headers.Authorization = window.sessionStorage.getItem('token')
   return config
 })
 // 在response拦截器中关闭进度条
 axios.interceptors.response.use(config => {
-  NProgree.done()
+  NProgress.done()
   return config
 })
 

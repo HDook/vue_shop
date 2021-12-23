@@ -2,7 +2,7 @@
   <el-container class="home-container">
     <el-header>
       <div>
-        <img src="../assets/cglogo.png" alt="">
+<!--        <img src="../assets/logo.png" alt="">-->
         <span>电商管理平台</span>
       </div>
       <el-button type="info" @click="logout">退出</el-button>
@@ -48,7 +48,7 @@
         </el-main>
         <el-footer>
           <div>
-            <p class="vcenter" style="text-align: center">杭州橙谷科技有限公司</p>
+            <p class="vcenter" style="text-align: center">电商管理平台</p>
           </div>
         </el-footer>
       </el-container>

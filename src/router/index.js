@@ -26,6 +26,7 @@ const Add = () => import(/* webpackChunkName: "add_order_report" */ '../componen
 const Order = () => import(/* webpackChunkName: "add_order_report" */ '../components/order/Order')
 // import Report from '@/components/report/Report'
 const Report = () => import(/* webpackChunkName: "add_order_report" */ '../components/report/Report')
+const Index = () => import(/* webpackChunkName: "index" */ '../components/index/Index')
 
 Vue.use(VueRouter)
 // const token = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3YW5nIiwiY3JlYXRlZCI6MTQ4OTA3OTk4MTM5MywiZXhwIjoxNDg5Njg0NzgxfQ.RC-BYCe_UZ2URtWddUpWXIp4NMsoeq2O6UF-8tVplqXY1-CI9u1-a-9DAAJGfNWkHE81mpnR3gXzfrBAB3WUAg'
@@ -34,7 +35,11 @@ const router = new VueRouter({
   routes: [
     {
       path: '/',
-      redirect: '/login'
+      redirect: '/index'
+    },
+    {
+      path: '/index',
+      component: Index
     },
     {
       path: '/login',
